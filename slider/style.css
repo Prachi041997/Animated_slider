@@ -1,0 +1,393 @@
+* {
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #ffffff;
+}
+
+:root {
+  --x-coordinate: 0px;
+  --y-coordinate: 0px;
+  --movement-scale-invert: 40;
+  --scroll-index: 0, ;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+main .background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  filter: blur(0px);
+  --background-transition-duration: 0.7s;
+  --background-transition-timing-function: ease-in-out;
+  transition: all var(--background-transition-duration) var(--background-transition-timing-function);
+}
+main .background .bg-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  transform: translateY(calc(var(--scroll-index) * 100dvh));
+  transition: all var(--background-transition-duration) var(--background-transition-timing-function);
+}
+main .background:has(.active) .view::after {
+  -webkit-backdrop-filter: blur(50px);
+          backdrop-filter: blur(50px);
+}
+main .background:has(.active) .view img {
+  filter: blur(50px);
+}
+main .background .view {
+  height: 100%;
+  width: 100%;
+  flex-shrink: 0;
+  transform: translateY(calc(var(--scroll-index) * 100dvh));
+  transition: all var(--background-transition-duration) var(--background-transition-timing-function);
+}
+main .background .view.top-most {
+  z-index: 99;
+}
+main .background .view::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 50%;
+  width: 100%;
+  z-index: 110;
+  -webkit-backdrop-filter: blur(0px);
+          backdrop-filter: blur(0px);
+  transition: all var(--background-transition-duration) var(--background-transition-timing-function);
+  transform: translate(-50%, -50%);
+}
+main .background .view .image-wrapper {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main .background .view .image-wrapper img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  scale: 1.1;
+  animation: scale-to-one 20s linear infinite both alternate;
+  transition: all var(--background-transition-duration) var(--background-transition-timing-function);
+}
+@keyframes scale-to-one {
+  0% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+main .background-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+@keyframes subtleMove {
+  0% {
+    transform: scale(0.8) translate(calc(var(--x-coordinate) / var(--movement-scale-invert)), calc(var(--y-coordinate) / var(--movement-scale-invert)));
+  }
+  25% {
+    transform: scale(0.85) translate(calc(var(--x-coordinate) / var(--movement-scale-invert)), calc(var(--y-coordinate) / var(--movement-scale-invert)));
+  }
+  50% {
+    transform: scale(0.9) translate(calc(var(--x-coordinate) / var(--movement-scale-invert)), calc(var(--y-coordinate) / var(--movement-scale-invert)));
+  }
+  75% {
+    transform: scale(0.95) translate(calc(var(--x-coordinate) / var(--movement-scale-invert)), calc(var(--y-coordinate) / var(--movement-scale-invert)));
+  }
+  100% {
+    transform: scale(1) translate(calc(var(--x-coordinate) / var(--movement-scale-invert)), calc(var(--y-coordinate) / var(--movement-scale-invert)));
+  }
+}
+main .background-view .center-movement {
+  transform: translate(calc(var(--x-coordinate) / var(--movement-scale-invert)), calc(var(--y-coordinate) / var(--movement-scale-invert)));
+  animation: subtleMove 10s linear infinite both alternate;
+  height: 100%;
+}
+main .background-view img {
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+main .land-person {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  transition: all 0.7s ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  transform: translateY(100%);
+}
+main .land-person .land {
+  width: 100% !important;
+  -o-object-fit: contain;
+     object-fit: contain;
+  bottom: 0;
+  left: 50%;
+  height: 100% !important;
+}
+main .land-person .person {
+  width: 100% !important;
+  -o-object-fit: contain;
+     object-fit: contain;
+  position: absolute;
+  bottom: 0;
+}
+main .view.active .land-person {
+  transform: translateY(0);
+  z-index: 111;
+}
+main section.view {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  padding: 0 min(17vw, 20rem);
+}
+main section.view:nth-child(2) .left,
+main section.view:nth-child(2) .right {
+  transform: translateY(0);
+}
+main section.view.view2 .background-view .land-person {
+  height: 15rem;
+}
+main section.view.view2 .background-view .land-person .land {
+  bottom: 0;
+  height: initial !important;
+}
+main section.view.view2 .background-view .land-person .person {
+  height: 15rem;
+}
+main section.view.view2 .background-view img {
+  width: 70%;
+}
+main section.view.view2 .background-view .center-movement {
+  height: 50%;
+}
+main section.view.view3 .background-view img {
+  height: 70%;
+  width: 70%;
+  position: absolute;
+}
+main section.view.view3 .background-view .center-movement {
+  bottom: 15%;
+}
+main section.view.view3 .background-view .astronaut-shadow {
+  width: 50%;
+  bottom: 10%;
+  transform: translateY(50%);
+}
+main section.view.view3 .background-view .astronaut-birds {
+  bottom: 0;
+  width: 45%;
+  transform: translateY(30%);
+}
+main section.view.view4 .middle {
+  width: 100%;
+}
+main section.view.view4 .middle h1 {
+  color: #212221;
+}
+main section.view.view4 .middle .right-align {
+  max-width: 30ch;
+  text-align: right;
+  margin-left: auto;
+}
+main section.view.view4 .background-view img {
+  height: initial;
+  position: absolute;
+}
+main section.view.view4 .background-view .center-movement {
+  width: 40%;
+  top: 0%;
+}
+main section.view.view4 .background-view .middle-cloud {
+  width: 70%;
+}
+main section.view.view4 .background-view .middle-ufo {
+  top: 7%;
+}
+main section.view.view4 .background-view .left-ufo {
+  top: 14%;
+  left: 20%;
+  width: 7%;
+}
+main section.view.view4 .background-view .right-ufo {
+  top: 7%;
+  right: 20%;
+  width: 7%;
+}
+main section.view.view4 .background-view .static-beam {
+  top: 10%;
+  z-index: -1;
+  opacity: 0.5;
+  animation: randomGlowUpAndGlowDown 0.2s linear infinite both;
+}
+@keyframes randomGlowUpAndGlowDown {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+main section.view.view4 .land-person img {
+  width: 100%;
+  height: initial;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+main section.view.active .left,
+main section.view.active .right {
+  transform: translateY(0);
+}
+main section.view .left,
+main section.view .right {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  transition: transform 1s ease-in-out 0.1s;
+  transform: translateY(30%);
+}
+main section.view .left {
+  padding-top: min(30vh, 20rem);
+  align-items: flex-start;
+}
+main section.view .left h1 {
+  font-size: 9rem;
+  line-height: 0.8;
+}
+main section.view .right {
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-bottom: 30vh;
+}
+main section.view .right P {
+  text-align: right;
+  width: 60%;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.05rem;
+}
+
+@media (max-width: 600px) {
+  main section.view {
+    flex-direction: column;
+    padding: 8rem 5vw;
+    justify-content: space-between;
+  }
+  main section.view .left,
+  main section.view .right {
+    width: 100%;
+    padding: initial;
+    pointer-events: none;
+  }
+  main section.view .left h1 {
+    font-size: 4rem;
+  }
+  main section.view .right p {
+    font-size: 0.9rem;
+    width: 90%;
+  }
+  main section.view.view4 {
+    padding-bottom: 12rem;
+  }
+  main section.view.view4 .middle {
+    justify-content: center;
+  }
+  main section.view.view4 .middle * {
+    text-align: center;
+  }
+  main section.view.view4 .middle p,
+  main section.view.view4 .middle .right-align {
+    text-align: center;
+    width: 100%;
+    max-width: initial;
+    margin-left: none;
+    font-weight: 200;
+  }
+  main section.view.view4 .land-person {
+    left: 0%;
+  }
+  main section.view.view4 .land-person img {
+    height: 15rem;
+    -o-object-fit: cover;
+       object-fit: cover;
+    -o-object-position: center;
+       object-position: center;
+    width: 100%;
+  }
+  main section.view.view4 .background-view .center-movement {
+    top: 13%;
+  }
+  main section.view.view4 .background-view .static-beam {
+    top: 15%;
+  }
+  main section.view.view4 .background-view .middle-cloud {
+    top: 5%;
+    width: 100%;
+  }
+  main section.view.view2 .background-view .land-person .land {
+    min-height: 10rem;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+  main section.view.view2 .background-view .land-person .person {
+    min-height: 10rem;
+    -o-object-fit: contain;
+       object-fit: contain;
+  }
+}/*# sourceMappingURL=style.css.map */
